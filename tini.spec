@@ -4,7 +4,7 @@
 #
 Name     : tini
 Version  : 0.18.0
-Release  : 1
+Release  : 2
 URL      : https://github.com/krallin/tini/archive/v0.18.0.tar.gz
 Source0  : https://github.com/krallin/tini/archive/v0.18.0.tar.gz
 Summary  : No detailed summary available
@@ -30,6 +30,14 @@ Requires: tini-license = %{version}-%{release}
 bin components for the tini package.
 
 
+%package extras
+Summary: extras components for the tini package.
+Group: Default
+
+%description extras
+extras components for the tini package.
+
+
 %package license
 Summary: license components for the tini package.
 Group: Default
@@ -46,7 +54,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1543254001
+export SOURCE_DATE_EPOCH=1543254251
 mkdir -p clr-build
 pushd clr-build
 %cmake ..
@@ -54,7 +62,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1543254001
+export SOURCE_DATE_EPOCH=1543254251
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/tini
 cp LICENSE %{buildroot}/usr/share/package-licenses/tini/LICENSE
@@ -67,8 +75,12 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/tini
+%exclude /usr/bin/tini
 /usr/bin/tini-static
+
+%files extras
+%defattr(-,root,root,-)
+/usr/bin/tini
 
 %files license
 %defattr(0644,root,root,0755)
