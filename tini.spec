@@ -4,7 +4,7 @@
 #
 Name     : tini
 Version  : 0.18.0
-Release  : 2
+Release  : 3
 URL      : https://github.com/krallin/tini/archive/v0.18.0.tar.gz
 Source0  : https://github.com/krallin/tini/archive/v0.18.0.tar.gz
 Summary  : No detailed summary available
@@ -54,21 +54,25 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1543254251
+export SOURCE_DATE_EPOCH=1556220849
 mkdir -p clr-build
 pushd clr-build
+export LDFLAGS="${LDFLAGS} -fno-lto"
 %cmake ..
 make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1543254251
+export SOURCE_DATE_EPOCH=1556220849
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/tini
 cp LICENSE %{buildroot}/usr/share/package-licenses/tini/LICENSE
 pushd clr-build
 %make_install
 popd
+## install_append content
+ln -sv /usr/bin/tini-static %{buildroot}/usr/bin/docker-init
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -76,6 +80,7 @@ popd
 %files bin
 %defattr(-,root,root,-)
 %exclude /usr/bin/tini
+/usr/bin/docker-init
 /usr/bin/tini-static
 
 %files extras

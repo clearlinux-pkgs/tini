@@ -1,0 +1,1 @@
+ln -sv /usr/bin/tini-static %{buildroot}/usr/bin/docker-init
