@@ -4,7 +4,7 @@
 #
 Name     : tini
 Version  : 0.19.0
-Release  : 4
+Release  : 5
 URL      : https://github.com/krallin/tini/archive/v0.19.0/tini-0.19.0.tar.gz
 Source0  : https://github.com/krallin/tini/archive/v0.19.0/tini-0.19.0.tar.gz
 Summary  : No detailed summary available
@@ -14,6 +14,7 @@ Requires: tini-bin = %{version}-%{release}
 Requires: tini-license = %{version}-%{release}
 BuildRequires : buildreq-cmake
 BuildRequires : glibc-staticdev
+Patch1: 0001-Remove-strip-option-to-linker.patch
 
 %description
 <!--
@@ -49,13 +50,14 @@ license components for the tini package.
 %prep
 %setup -q -n tini-0.19.0
 cd %{_builddir}/tini-0.19.0
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1587400309
+export SOURCE_DATE_EPOCH=1646677471
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -64,11 +66,11 @@ export FCFLAGS="$FFLAGS -fno-lto "
 export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %cmake ..
-make  %{?_smp_mflags}  VERBOSE=1
+make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1587400309
+export SOURCE_DATE_EPOCH=1646677471
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/tini
 cp %{_builddir}/tini-0.19.0/LICENSE %{buildroot}/usr/share/package-licenses/tini/5d7ef48d42c722ff05c54cb16ca665ca2f97f2c7
